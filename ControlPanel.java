@@ -69,7 +69,7 @@ public class ControlPanel {
         user= new File( username+".txt")
         try {
             //Création de l'objet
-            fw = new FileWriter(userNames);
+            fw = new FileWriter("Usernames.txt", true);
             String str = username;
             fw.write(str);
             fw.close();
@@ -90,10 +90,10 @@ public class ControlPanel {
 
     }
 
-    public String readUser(){
+    public String readUser(String username){
         String strB="";
         try{
-            frFileCreation = new FileReader(user);
+            frFileCreation = new FileReader(username + ".txt");
             int i=0;
             while ((i = fr.read()) != -1)
                 strB += (char) i;
@@ -106,15 +106,16 @@ public class ControlPanel {
     }
 
 
-    public void eraseUser( File file){
-        file.delete();
+    public void eraseUser( String username){
+        File user = new File(username + ".txt");
+        user.delete();
     }
 
 
     public String readListUsers() {
         String str = "";
         try {
-            fr = new FileReader(userNames);
+            fr = new FileReader("Usernames.txt");
             int i = 0;
             while ((i = fr.read()) != -1)
                 str += (char) i;
