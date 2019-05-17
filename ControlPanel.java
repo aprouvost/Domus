@@ -1,5 +1,8 @@
 package Domus;
 
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.Border;
 import Camera_P2I.DetectionMain;
 import Camera_P2I.VisualizationWindow;
 import java.io.File;
@@ -9,8 +12,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
-public class ControlPanel {
+public class ControlPanel extends JFrame{
+
+    private JPanel content, status, configuration, settings;
+    private JButton test;
+    private JLabel statusLabel, configLabel, settingsLabel, arduinoStatus, bluetoothStatus, camStatus;
+    private JButton camSettings, accelSettings, dBSettings, addUser, deleteUser;
+    private JList<String> usersList;
+    private String[] users;
+    private JSeparator sep1, sep2;
+    private Font titleFont;
 
     private boolean arduinoConnected;
     private boolean connexionEstablished;
@@ -20,7 +33,6 @@ public class ControlPanel {
     private FileWriter fwFileCreation;
     private FileReader frFileCreation;
 
-    private File user;  // un file par utilisateur
     private File userNames; // un file avec le nom de tous les utilisateurs
 
     private VisualizationWindow camPanel;
@@ -28,6 +40,163 @@ public class ControlPanel {
     private fenetreBaseDonnee databasePanel;
     private fenetreAccelerometre acceleroPanel;
     private fenetreConnexion connexionPanel;
+
+
+
+
+    public static void main(String[] args) {
+
+        ControlPanel c = new ControlPanel();
+
+    }
+
+
+    public ControlPanel(){
+
+        titleFont = new Font("Arial", Font.PLAIN, 24);
+
+        Border interMenu = BorderFactory.createEmptyBorder(20,20,20,20);
+
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+         users = readListUsers();
+
+        usersList = new JList<String>(users);
+
+        JScrollPane scrollPane = new JScrollPane(usersList);
+
+        Border sepBorder = BorderFactory.createEmptyBorder(10,0,10,0);
+
+        //Content Pane
+        content = new JPanel();
+        content.setLayout(new BoxLayout(content, SwingConstants.HORIZONTAL));
+
+        //Pane holding status
+        Border statusBorder = BorderFactory.createEmptyBorder(10,5,10,5);
+
+        status = new JPanel();
+        status.setLayout(new BoxLayout(status, BoxLayout.Y_AXIS));
+        status.setBorder(interMenu);
+
+        statusLabel = new JLabel("Statut de la connexion");
+        statusLabel.setFont(titleFont);
+        status.add(statusLabel);
+        status.add(Box.createVerticalGlue());
+
+        arduinoStatus = new JLabel("Arduino connecté ?");
+        arduinoStatus.setForeground(Color.red);
+        arduinoStatus.setAlignmentX(0.5f);
+        arduinoStatus.setBorder(statusBorder);
+        status.add(arduinoStatus);
+
+
+        bluetoothStatus = new JLabel("Bluetooth connecté ?");
+        bluetoothStatus.setForeground(Color.red);
+        bluetoothStatus.setAlignmentX(0.5f);
+        bluetoothStatus.setBorder(statusBorder);
+        status.add(bluetoothStatus);
+
+        camStatus = new JLabel("Caméra ok ?");
+        camStatus.setForeground(Color.red);
+        camStatus.setAlignmentX(0.5f);
+        camStatus.setBorder(statusBorder);
+        status.add(camStatus);
+
+        status.add(Box.createVerticalGlue());
+
+        //Séparateur
+        sep1 = new JSeparator(SwingConstants.VERTICAL);
+        sep1.setBackground(Color.BLACK);
+        sep1.setBorder(sepBorder);
+
+
+        //Pane holding configurations
+        configuration = new JPanel();
+        configuration.setLayout(new BoxLayout(configuration, BoxLayout.Y_AXIS));
+        configuration.setBorder(interMenu);
+
+        configLabel = new JLabel("Configuration de l'utilisateur");
+        configLabel.setFont(titleFont);
+
+        configuration.add(configLabel);
+        configuration.add(scrollPane);
+        configuration.add(Box.createVerticalGlue());
+
+
+        JPanel boutonsConfig = new JPanel();
+
+        addUser = new JButton("Ajouter un utilisateur");
+        boutonsConfig.add(addUser);
+
+        deleteUser = new JButton("Supprimer utilisateur");
+        boutonsConfig.add(deleteUser);
+
+        configuration.add(boutonsConfig);
+
+        configuration.add(Box.createVerticalGlue());
+
+
+        //Séparateur
+        sep2 = new JSeparator(SwingConstants.VERTICAL);
+        sep2.setBackground(Color.BLACK);
+        sep2.setBorder(sepBorder);
+
+
+        //Pane holding settings
+        settings = new JPanel();
+        settings.setLayout(new BoxLayout(settings, BoxLayout.Y_AXIS));
+        settings.setBorder(interMenu);
+
+        settingsLabel = new JLabel("Paramètres");
+        settingsLabel.setFont(titleFont);
+        settings.add(settingsLabel);
+
+        settings.add(Box.createVerticalGlue());
+
+        camSettings = new JButton("Paramètres caméra");
+        settings.add(camSettings);
+
+        settings.add(Box.createVerticalGlue());
+
+        accelSettings = new JButton("Paramètres accéléromètre");
+        settings.add(accelSettings);
+
+        settings.add(Box.createVerticalGlue());
+
+        dBSettings = new JButton("Paramètres base de données");
+        settings.add(dBSettings);
+
+        settings.add(Box.createVerticalGlue());
+
+
+
+        content.add(Box.createHorizontalGlue());
+        content.add(status);
+        content.add(Box.createHorizontalGlue());
+        content.add(sep1);
+        content.add(Box.createHorizontalGlue());
+        content.add(configuration);
+        content.add(Box.createHorizontalGlue());
+        content.add(sep2);
+        content.add(Box.createHorizontalGlue());
+        content.add(settings);
+        content.add(Box.createHorizontalGlue());
+
+        this.setContentPane(content);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        this.setSize(1300, 540);
+        //this.setResizable(false);
+        this.setVisible(true);
+
+    }
 
     public void cameraState() {
         cameraWorking = hand.cameraIsOpened();
@@ -112,8 +281,10 @@ public class ControlPanel {
     }
 
 
-    public String readListUsers() {
+    public String[] readListUsers() {
         String str = "";
+        ArrayList<String> tmp = new ArrayList<String>();
+
         try {
             fr = new FileReader("Usernames.txt");
             int i = 0;
@@ -128,4 +299,8 @@ public class ControlPanel {
     }
 
 
+
 }
+
+
+
