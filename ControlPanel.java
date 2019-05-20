@@ -5,7 +5,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import Camera_P2I.DetectionMain;
 import Camera_P2I.VisualizationWindow;
-import java.io.File;
+
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,8 +14,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.*;
 
-public class ControlPanel extends JFrame{
+import java.awt.event.*;
+
+
+import static java.lang.System.out;
+
+public class ControlPanel extends JFrame implements ActionListener {
 
     private JPanel content, status, configuration, settings;
     private JButton test;
@@ -24,6 +31,11 @@ public class ControlPanel extends JFrame{
     private String[] users;
     private JSeparator sep1, sep2;
     private Font titleFont;
+    private JScrollPane scrollPane;
+    private  JCheckBox checkHandFollowed;
+    private  JTextField chooseUserName;
+
+    private boolean followed;
 
     private boolean arduinoConnected;
     private boolean connexionEstablished;
@@ -34,12 +46,13 @@ public class ControlPanel extends JFrame{
     private FileReader frFileCreation;
 
     private File userNames; // un file avec le nom de tous les utilisateurs
+    private File userFile; // un fle avec pour chaque utilisateur ses caractéristiques
 
     private VisualizationWindow camPanel;
     private DetectionMain hand;
     private fenetreBaseDonnee databasePanel;
     private fenetreAccelerometre acceleroPanel;
-    private fenetreConnexion connexionPanel;
+   // private fenetreConnexion connexionPanel;
 
 
 
@@ -51,7 +64,7 @@ public class ControlPanel extends JFrame{
     }
 
 
-    public ControlPanel(){
+    public ControlPanel () {
 
         titleFont = new Font("Arial", Font.PLAIN, 24);
 
@@ -69,9 +82,7 @@ public class ControlPanel extends JFrame{
          users = readListUsers();
 
         usersList = new JList<String>(users);
-
-        JScrollPane scrollPane = new JScrollPane(usersList);
-
+        scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10,0,10,0);
 
         //Content Pane
@@ -132,10 +143,21 @@ public class ControlPanel extends JFrame{
 
         JPanel boutonsConfig = new JPanel();
 
+
+        checkHandFollowed= new JCheckBox( "Suivi de la main activé ");
+        checkHandFollowed.addActionListener( this);
+        boutonsConfig.add(checkHandFollowed);
+
         addUser = new JButton("Ajouter un utilisateur");
+        addUser.addActionListener(this);
         boutonsConfig.add(addUser);
 
+        chooseUserName= new JTextField( "Nom du nouvel utilisateur");
+        chooseUserName.addActionListener(this);
+        boutonsConfig.add(chooseUserName);
+
         deleteUser = new JButton("Supprimer utilisateur");
+        deleteUser.addActionListener(this);
         boutonsConfig.add(deleteUser);
 
         configuration.add(boutonsConfig);
@@ -161,17 +183,19 @@ public class ControlPanel extends JFrame{
         settings.add(Box.createVerticalGlue());
 
         camSettings = new JButton("Paramètres caméra");
+        camSettings.addActionListener(this);
         settings.add(camSettings);
 
         settings.add(Box.createVerticalGlue());
 
         accelSettings = new JButton("Paramètres accéléromètre");
+        accelSettings.addActionListener(this);
         settings.add(accelSettings);
 
         settings.add(Box.createVerticalGlue());
 
         dBSettings = new JButton("Paramètres base de données");
-        settings.add(dBSettings);
+        dBSettings.addActionListener(this);
 
         settings.add(Box.createVerticalGlue());
 
@@ -235,7 +259,7 @@ public class ControlPanel extends JFrame{
 
     public void newUser(String hue, String username, String saturation, String value, String adresseCSV) {
         // ursername: nom écrit par l'utilisateur
-        user= new File( username+".txt")
+        userFile= new File( username+".txt");
         try {
             //Création de l'objet
             fw = new FileWriter("Usernames.txt", true);
@@ -243,7 +267,7 @@ public class ControlPanel extends JFrame{
             fw.write(str);
             fw.close();
 
-            fwFileCreation = new FileWriter(user);
+            fwFileCreation = new FileWriter(userFile);
             String strB = username;
             strB += "\t hue  : " +  hue + "\n";
             strB += "\t saturation  : " + saturation + "\n";
@@ -281,21 +305,43 @@ public class ControlPanel extends JFrame{
     }
 
 
-    public String[] readListUsers() {
-        String str = "";
+    public String[] readListUsers() throws Exception {
         ArrayList<String> tmp = new ArrayList<String>();
-
-        try {
-            fr = new FileReader("Usernames.txt");
-            int i = 0;
-            while ((i = fr.read()) != -1)
-                str += (char) i;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Scanner scanner = new Scanner( userNames);
+        while (scanner.hasNextLine()) {
+            tmp.add(scanner.nextLine());
+            }
+        String[] ret= new String [tmp.size()];
+        for ( int i=0; i< tmp.size(); i++){
+            ret[i]= tmp.get(i);
         }
-        return str;
+        return ret;
+    }
+
+    public void actionPerformed ( ActionEvent e){
+        if (e.getSource()== addUser){
+            newUser(hand.getHue(), chooseUserName.getText(), hand.getSatThresh(), hand.getValThresh(), adresseCSV );
+        }
+        if (e.getSource()== deleteUser){
+            eraseUser( usersList.getSelectedValue());
+        }
+        if (e.getSource()== dBSettings){
+            // settings for the database
+        }
+        if ( e.getSource()== accelSettings){
+            // settings for the accelerometer
+        }
+        if (e.getSource()== camSettings){ // settings for the camera
+            VisualizationWindow cam= new VisualizationWindow(hand);
+        }
+        if ( checkHandFollowed.isSelected()){ // suivi de la main
+                followed=true;
+        }
+        if ( !checkHandFollowed.isSelected()){ // Arret du suivi de la main
+            followed= false;
+        }
+
+
     }
 
 
