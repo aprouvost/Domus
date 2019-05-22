@@ -2,6 +2,7 @@ package Domus;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import Camera_P2I.DetectionMain;
 import Camera_P2I.VisualizationWindow;
@@ -12,28 +13,25 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.*;
 
 import java.awt.event.*;
 
-
-import static java.lang.System.out;
-
 public class ControlPanel extends JFrame implements ActionListener {
 
     private JPanel content, status, configuration, settings;
     private JButton test;
-    private JLabel statusLabel, configLabel, settingsLabel, arduinoStatus, bluetoothStatus, camStatus;
+    private JLabel statusLabel, configLabel, settingsLabel, handFollowed, bluetoothStatus, camStatus;
     private JButton camSettings, accelSettings, dBSettings, addUser, deleteUser;
     private JList<String> usersList;
     private String[] users;
     private JSeparator sep1, sep2;
     private Font titleFont;
     private JScrollPane scrollPane;
-    private  JCheckBox checkHandFollowed;
-    private  JTextField chooseUserName;
+    private JCheckBox checkHandFollowed;
+    private JTextField chooseUserName;
+    private Timer timer;
 
     private boolean followed;
 
@@ -50,11 +48,10 @@ public class ControlPanel extends JFrame implements ActionListener {
 
     private VisualizationWindow camPanel;
     private DetectionMain hand;
-    private fenetreBaseDonnee databasePanel;
-    private fenetreAccelerometre acceleroPanel;
-   // private fenetreConnexion connexionPanel;
-
-
+    // private fenetreBaseDonnee databasePanel;
+    // private fenetreAccelerometre acceleroPanel;
+    // private bluetooth bluetoothPannel;
+    // private fenetreConnexion connexionPanel;
 
 
     public static void main(String[] args) {
@@ -64,33 +61,37 @@ public class ControlPanel extends JFrame implements ActionListener {
     }
 
 
-    public ControlPanel () {
+    public ControlPanel() {
+
+        int delay = 1000; //milliseconds
+        timer = new Timer(1000, this);
+        timer.start();
+        hand= new DetectionMain();
 
         titleFont = new Font("Arial", Font.PLAIN, 24);
 
-        Border interMenu = BorderFactory.createEmptyBorder(20,20,20,20);
+        Border interMenu = BorderFactory.createEmptyBorder(20, 20, 20, 20);
 
         try {
             // Set cross-platform Java L&F (also called "Metal")
             UIManager.setLookAndFeel(
                     UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
-         users = readListUsers();
+       // users = readListUsers();
 
-        usersList = new JList<String>(users);
+       // usersList = new JList<String>(users);
         scrollPane = new JScrollPane(usersList);
-        Border sepBorder = BorderFactory.createEmptyBorder(10,0,10,0);
+        Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
         //Content Pane
         content = new JPanel();
         content.setLayout(new BoxLayout(content, SwingConstants.HORIZONTAL));
 
         //Pane holding status
-        Border statusBorder = BorderFactory.createEmptyBorder(10,5,10,5);
+        Border statusBorder = BorderFactory.createEmptyBorder(10, 5, 10, 5);
 
         status = new JPanel();
         status.setLayout(new BoxLayout(status, BoxLayout.Y_AXIS));
@@ -101,11 +102,11 @@ public class ControlPanel extends JFrame implements ActionListener {
         status.add(statusLabel);
         status.add(Box.createVerticalGlue());
 
-        arduinoStatus = new JLabel("Arduino connecté ?");
-        arduinoStatus.setForeground(Color.red);
-        arduinoStatus.setAlignmentX(0.5f);
-        arduinoStatus.setBorder(statusBorder);
-        status.add(arduinoStatus);
+        handFollowed = new JLabel("Suivi main ?");
+        handFollowed.setForeground(Color.red);
+        handFollowed.setAlignmentX(0.5f);
+        handFollowed.setBorder(statusBorder);
+        status.add(handFollowed);
 
 
         bluetoothStatus = new JLabel("Bluetooth connecté ?");
@@ -144,15 +145,15 @@ public class ControlPanel extends JFrame implements ActionListener {
         JPanel boutonsConfig = new JPanel();
 
 
-        checkHandFollowed= new JCheckBox( "Suivi de la main activé ");
-        checkHandFollowed.addActionListener( this);
+        checkHandFollowed = new JCheckBox("Suivi de la main:  ");
+        checkHandFollowed.addActionListener(this);
         boutonsConfig.add(checkHandFollowed);
 
         addUser = new JButton("Ajouter un utilisateur");
         addUser.addActionListener(this);
         boutonsConfig.add(addUser);
 
-        chooseUserName= new JTextField( "Nom du nouvel utilisateur");
+        chooseUserName = new JTextField("Nom du nouvel utilisateur");
         chooseUserName.addActionListener(this);
         boutonsConfig.add(chooseUserName);
 
@@ -200,7 +201,6 @@ public class ControlPanel extends JFrame implements ActionListener {
         settings.add(Box.createVerticalGlue());
 
 
-
         content.add(Box.createHorizontalGlue());
         content.add(status);
         content.add(Box.createHorizontalGlue());
@@ -232,34 +232,15 @@ public class ControlPanel extends JFrame implements ActionListener {
     }
 
 
-    public void connexionState() {
-        connexionEstablished = connexionPanel.getconnexion();
-        if (connexionEstablished == true) {
-            // texte devient vert
-        } else {
-            // texte devient rouge
-        }
-    }
-
-    public void arduinoState() {
-        arduinoConnected = acceleroPanel.getconnexion();
-        if (arduinoConnected == true) {
-            // texte devient vert
-        } else {
-            // texte devient rouge
-        }
-    }
-
     public void userFileCreation() {
         userNames = new File("UserNames.txt");
 
     }
 
 
-
-    public void newUser(String hue, String username, String saturation, String value, String adresseCSV) {
+    public void newUser(int hue, String username, int saturation, int value) {
         // ursername: nom écrit par l'utilisateur
-        userFile= new File( username+".txt");
+        userFile = new File(username + ".txt");
         try {
             //Création de l'objet
             fw = new FileWriter("Usernames.txt", true);
@@ -269,10 +250,9 @@ public class ControlPanel extends JFrame implements ActionListener {
 
             fwFileCreation = new FileWriter(userFile);
             String strB = username;
-            strB += "\t hue  : " +  hue + "\n";
+            strB += "\t hue  : " + hue + "\n";
             strB += "\t saturation  : " + saturation + "\n";
             strB += "\t value : " + value + "\n";
-            strB += "\t adresse fichier CSV : " + adresseCSV + "\n";
             fwFileCreation.write(str);
             fwFileCreation.close();
         } catch (FileNotFoundException e) {
@@ -283,11 +263,11 @@ public class ControlPanel extends JFrame implements ActionListener {
 
     }
 
-    public String readUser(String username){
-        String strB="";
-        try{
+    public String readUser(String username) {
+        String strB = "";
+        try {
             frFileCreation = new FileReader(username + ".txt");
-            int i=0;
+            int i = 0;
             while ((i = fr.read()) != -1)
                 strB += (char) i;
         } catch (FileNotFoundException e) {
@@ -299,7 +279,7 @@ public class ControlPanel extends JFrame implements ActionListener {
     }
 
 
-    public void eraseUser( String username){
+    public void eraseUser(String username) {
         File user = new File(username + ".txt");
         user.delete();
     }
@@ -307,46 +287,57 @@ public class ControlPanel extends JFrame implements ActionListener {
 
     public String[] readListUsers() throws Exception {
         ArrayList<String> tmp = new ArrayList<String>();
-        Scanner scanner = new Scanner( userNames);
+        Scanner scanner = new Scanner(userNames);
         while (scanner.hasNextLine()) {
             tmp.add(scanner.nextLine());
-            }
-        String[] ret= new String [tmp.size()];
-        for ( int i=0; i< tmp.size(); i++){
-            ret[i]= tmp.get(i);
+        }
+        String[] ret = new String[tmp.size()];
+        for (int i = 0; i < tmp.size(); i++) {
+            ret[i] = tmp.get(i);
         }
         return ret;
     }
 
-    public void actionPerformed ( ActionEvent e){
-        if (e.getSource()== addUser){
-            newUser(hand.getHue(), chooseUserName.getText(), hand.getSatThresh(), hand.getValThresh(), adresseCSV );
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == addUser) {
+            newUser(hand.getHue(), chooseUserName.getText(), hand.getSatThresh(), hand.getValThresh());
         }
-        if (e.getSource()== deleteUser){
-            eraseUser( usersList.getSelectedValue());
+        if (e.getSource() == deleteUser) {
+            eraseUser(usersList.getSelectedValue());
         }
-        if (e.getSource()== dBSettings){
+        if (e.getSource() == dBSettings) {
             // settings for the database
         }
-        if ( e.getSource()== accelSettings){
+        if (e.getSource() == accelSettings) {
             // settings for the accelerometer
         }
-        if (e.getSource()== camSettings){ // settings for the camera
-            VisualizationWindow cam= new VisualizationWindow(hand);
+        if (e.getSource() == camSettings) { // settings for the camera
+            VisualizationWindow cam = new VisualizationWindow(hand);
+            camStatus.setForeground(Color.green);
         }
-        if ( checkHandFollowed.isSelected()){ // suivi de la main
-                followed=true;
+        if (checkHandFollowed.isSelected()) { // suivi de la main
+            followed = true;
+            handFollowed.setForeground(Color.green);
         }
-        if ( !checkHandFollowed.isSelected()){ // Arret du suivi de la main
-            followed= false;
+        if (!checkHandFollowed.isSelected()) { // Arret du suivi de la main
+            followed = false;
+            handFollowed.setForeground(Color.red);
         }
-
-
+       /* if (e.getSource() == timer && bluetoothPannel.getBluetoothState == true) {
+            timer.restart();
+            if (bluetoothPannel.getBluetoothState == true) {
+                connexionEstablished = true;
+                bluetoothStatus.setForeground( Color.green);
+            }
+            if (bluetoothPannel.getBluetoothState == true) {
+                connexionEstablished = false;
+                bluetoothStatus.setForeground( Color.red);
+            }
+        }*/
     }
-
-
-
 }
+
+
 
 
 
