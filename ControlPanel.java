@@ -15,12 +15,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.*;
-
 import java.awt.event.*;
 
 public class ControlPanel extends JFrame implements ActionListener {
 
-    private JPanel content, status, configuration, settings;
+    private JPanel  status, configuration, settings;
     private JButton test;
     private JLabel statusLabel, configLabel, settingsLabel, handFollowed, bluetoothStatus, camStatus;
     private JButton camSettings, accelSettings, dBSettings, addUser, deleteUser;
@@ -31,6 +30,7 @@ public class ControlPanel extends JFrame implements ActionListener {
     private JScrollPane scrollPane;
     private JCheckBox checkHandFollowed;
     private JTextField chooseUserName;
+    private PanelB content;
    // private Timer timer;
 
     private boolean followed;
@@ -50,22 +50,23 @@ public class ControlPanel extends JFrame implements ActionListener {
     private DetectionMain hand;
     // private fenetreBaseDonnee databasePanel;
     // private fenetreAccelerometre acceleroPanel;
-     private bluetooth bluetoothPannel;
+     public accelrecog.bluetooth bluetoothPannel;
     // private fenetreConnexion connexionPanel;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         ControlPanel c = new ControlPanel();
 
     }
 
 
-    public ControlPanel() {
+    public ControlPanel() throws IOException {
+
+        Image background = Toolkit.getDefaultToolkit().createImage("imageFond.png");
 
         int delay = 1000; //milliseconds
-     //   timer = new Timer(1000, this);
-      // timer.start();
+
         hand= new DetectionMain();
         hand.getHandCoordinates();
 
@@ -81,15 +82,27 @@ public class ControlPanel extends JFrame implements ActionListener {
             e.printStackTrace();
         }
 
-       // users = readListUsers();
-
-       // usersList = new JList<String>(users);
         scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
         //Content Pane
-        content = new JPanel();
+        content = new PanelB()
+
+
+
+        /*{
+            Image background = Toolkit.getDefaultToolkit().createImage("imageFond.png");
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g); // paint the background image and scale it to fill the entire space
+                g.drawImage(background, 0, 0, null);
+
+
+            }
+        }*/
+
+        ;
         content.setLayout(new BoxLayout(content, SwingConstants.HORIZONTAL));
+
 
         //Pane holding status
         Border statusBorder = BorderFactory.createEmptyBorder(10, 5, 10, 5);
@@ -202,24 +215,27 @@ public class ControlPanel extends JFrame implements ActionListener {
         settings.add(Box.createVerticalGlue());
 
 
-        content.add(Box.createHorizontalGlue());
-        content.add(status);
-        content.add(Box.createHorizontalGlue());
-        content.add(sep1);
-        content.add(Box.createHorizontalGlue());
-        content.add(configuration);
-        content.add(Box.createHorizontalGlue());
-        content.add(sep2);
-        content.add(Box.createHorizontalGlue());
-        content.add(settings);
-        content.add(Box.createHorizontalGlue());
+     //   content.add(Box.createHorizontalGlue());
+     //   content.add(status);
+     //   content.add(Box.createHorizontalGlue());
+       // content.add(sep1);
+      //  content.add(Box.createHorizontalGlue());
+      //  content.add(configuration);
+      //  content.add(Box.createHorizontalGlue());
+       // content.add(sep2);
+       // content.add(Box.createHorizontalGlue());
+      //  content.add(settings);
+       // content.add(Box.createHorizontalGlue());
 
         this.setContentPane(content);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.setSize(1300, 540);
+        this.setSize(13000, 5400);
         //this.setResizable(false);
+
+
         this.setVisible(true);
+
 
     }
 
