@@ -2,7 +2,7 @@ package Domus;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.Timer;
+//import javax.swing.Timer;
 import javax.swing.border.Border;
 import Camera_P2I.DetectionMain;
 import Camera_P2I.VisualizationWindow;
@@ -31,7 +31,7 @@ public class ControlPanel extends JFrame implements ActionListener {
     private JScrollPane scrollPane;
     private JCheckBox checkHandFollowed;
     private JTextField chooseUserName;
-    private Timer timer;
+   // private Timer timer;
 
     private boolean followed;
 
@@ -50,7 +50,7 @@ public class ControlPanel extends JFrame implements ActionListener {
     private DetectionMain hand;
     // private fenetreBaseDonnee databasePanel;
     // private fenetreAccelerometre acceleroPanel;
-    // private bluetooth bluetoothPannel;
+     private bluetooth bluetoothPannel;
     // private fenetreConnexion connexionPanel;
 
 
@@ -64,9 +64,10 @@ public class ControlPanel extends JFrame implements ActionListener {
     public ControlPanel() {
 
         int delay = 1000; //milliseconds
-        timer = new Timer(1000, this);
-        timer.start();
+     //   timer = new Timer(1000, this);
+      // timer.start();
         hand= new DetectionMain();
+        hand.getHandCoordinates();
 
         titleFont = new Font("Arial", Font.PLAIN, 24);
 
@@ -323,17 +324,7 @@ public class ControlPanel extends JFrame implements ActionListener {
             followed = false;
             handFollowed.setForeground(Color.red);
         }
-       /* if (e.getSource() == timer && bluetoothPannel.getBluetoothState == true) {
-            timer.restart();
-            if (bluetoothPannel.getBluetoothState == true) {
-                connexionEstablished = true;
-                bluetoothStatus.setForeground( Color.green);
-            }
-            if (bluetoothPannel.getBluetoothState == true) {
-                connexionEstablished = false;
-                bluetoothStatus.setForeground( Color.red);
-            }
-        }*/
+
     }
 }
 
