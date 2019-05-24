@@ -1,31 +1,16 @@
-package Domus;
+package accelrecog;
 
-import java.sql.Time;
 
 public class bluetooth {
 
-    public boolean connexionEstablished;
-    public long milisLastReceived;
+    private long milisLastReceived = 0;
 
-    public bluetooth(){
-        connexionEstablished= false;
-    }
-
-    public void getCurrentTime(){
+    public void receivedPing (){
         milisLastReceived=System.currentTimeMillis();
     }
 
-    public void receivedPing ( boolean pingReceived){
-        connexionEstablished= true;
-    }
-
-    public void getBluetoothState(){
-        if ( System.currentTimeMillis()- milisLastReceived >10){
-            connexionEstablished= false;
-        }
-        if ( System.currentTimeMillis()- milisLastReceived<=10){
-            connexionEstablished= true;
-        }
+    public boolean getBluetoothState(){
+        return ( System.currentTimeMillis()- milisLastReceived<=10000);
     }
 
 }
