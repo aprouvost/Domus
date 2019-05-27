@@ -1,5 +1,11 @@
 package Domus;
 
+import Camera_P2I.DetectionMain;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.io.IOException;
 import java.awt.*;
 import javax.swing.*;
 //import javax.swing.Timer;
@@ -17,7 +23,8 @@ import java.util.ArrayList;
 import java.util.*;
 import java.awt.event.*;
 
-public class ControlPanel extends JFrame implements ActionListener {
+
+public class TestImage extends JFrame implements ActionListener {
 
     private JPanel  status, configuration, settings;
     private JButton test;
@@ -30,9 +37,7 @@ public class ControlPanel extends JFrame implements ActionListener {
     private JScrollPane scrollPane;
     private JCheckBox checkHandFollowed;
     private JTextField chooseUserName;
-    private JPanel content;
-   // private Timer timer;
-
+    private JLabel content;
     private boolean followed;
 
     private boolean arduinoConnected;
@@ -43,40 +48,34 @@ public class ControlPanel extends JFrame implements ActionListener {
     private FileWriter fwFileCreation;
     private FileReader frFileCreation;
 
-    private File userNames; // un file avec le nom de tous les utilisateurs
-    private File userFile; // un fle avec pour chaque utilisateur ses caractéristiques
-
     private VisualizationWindow camPanel;
     private DetectionMain hand;
-    // private fenetreBaseDonnee databasePanel;
-    // private fenetreAccelerometre acceleroPanel;
-     public accelrecog.bluetooth bluetoothPannel;
-    // private fenetreConnexion connexionPanel;
+    public accelrecog.bluetooth bluetoothPannel;
+
+
 
 
     public static void main(String[] args) throws IOException {
 
-        ControlPanel c = new ControlPanel();
-
+    TestImage c = new TestImage();
 
     }
 
 
-    public ControlPanel() throws IOException {
+    public TestImage() throws IOException {
+        setLayout(null);
+      content = new JLabel();
+      content.setIcon(new javax.swing.ImageIcon(getClass().getResource("imageFond.png")));
+      content.setBounds(0,0,855,597);
 
-       // Image background = Toolkit.getDefaultToolkit().createImage("imageFond.png");
-        ImageIcon back= new ImageIcon("imageFondJPG.jpg");
-        content= new JPanel();
 
-        JLabel background= new JLabel(back);
-     //   background.setBounds(20,20, 40,40);
+    this.add(content);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-      //  content.add(background);
-      //  background.setVisible(true);
+        this.setSize(857, 597);
+        this.setResizable(false);
 
-        //back.setIcon(back);
-
-        int delay = 1000; //milliseconds
+      //  this.setVisible(true);
 
         hand= new DetectionMain();
         hand.getHandCoordinates();
@@ -98,21 +97,7 @@ public class ControlPanel extends JFrame implements ActionListener {
 
 
 
-
-
-        /*{
-            Image background = Toolkit.getDefaultToolkit().createImage("imageFond.png");
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g); // paint the background image and scale it to fill the entire space
-                g.drawImage(background, 0, 0, null);
-
-
-            }
-        }*/
-
-        ;
-        content.setLayout(new BoxLayout(content, SwingConstants.HORIZONTAL));
-
+        content.setLayout(null);
 
         //Pane holding status
         Border statusBorder = BorderFactory.createEmptyBorder(10, 5, 10, 5);
@@ -120,17 +105,19 @@ public class ControlPanel extends JFrame implements ActionListener {
         status = new JPanel();
         status.setLayout(new BoxLayout(status, BoxLayout.Y_AXIS));
         status.setBorder(interMenu);
+        status.setOpaque(false);
+        status.setBounds(0,240, 281,597);
 
-        statusLabel = new JLabel("Statut de la connexion");
-        statusLabel.setFont(titleFont);
-        status.add(statusLabel);
-        status.add(Box.createVerticalGlue());
+
+
+
 
         handFollowed = new JLabel("Suivi main ?");
         handFollowed.setForeground(Color.red);
         handFollowed.setAlignmentX(0.5f);
         handFollowed.setBorder(statusBorder);
         status.add(handFollowed);
+        //handFollowed.setOpaque(false);
 
 
         bluetoothStatus = new JLabel("Bluetooth connecté ?");
@@ -138,35 +125,41 @@ public class ControlPanel extends JFrame implements ActionListener {
         bluetoothStatus.setAlignmentX(0.5f);
         bluetoothStatus.setBorder(statusBorder);
         status.add(bluetoothStatus);
+       // bluetoothStatus.setOpaque(false);
 
         camStatus = new JLabel("Caméra ok ?");
         camStatus.setForeground(Color.red);
         camStatus.setAlignmentX(0.5f);
         camStatus.setBorder(statusBorder);
         status.add(camStatus);
+        //camStatus.setOpaque(false);
 
         status.add(Box.createVerticalGlue());
 
-        //Séparateur
+      /*  //Séparateur
         sep1 = new JSeparator(SwingConstants.VERTICAL);
         sep1.setBackground(Color.BLACK);
-        sep1.setBorder(sepBorder);
+        sep1.setBorder(sepBorder);*/
 
 
         //Pane holding configurations
         configuration = new JPanel();
         configuration.setLayout(new BoxLayout(configuration, BoxLayout.Y_AXIS));
         configuration.setBorder(interMenu);
+        configuration.setOpaque(false);
+        configuration.setBounds(281,150,281,597);
 
         configLabel = new JLabel("Configuration de l'utilisateur");
         configLabel.setFont(titleFont);
+        configLabel.setOpaque(false);
 
-        configuration.add(configLabel);
+        //
+        // configuration.add(configLabel);
         configuration.add(scrollPane);
-        configuration.add(Box.createVerticalGlue());
 
 
         JPanel boutonsConfig = new JPanel();
+        boutonsConfig.setOpaque(false);
 
 
         checkHandFollowed = new JCheckBox("Suivi de la main:  ");
@@ -200,49 +193,29 @@ public class ControlPanel extends JFrame implements ActionListener {
         settings = new JPanel();
         settings.setLayout(new BoxLayout(settings, BoxLayout.Y_AXIS));
         settings.setBorder(interMenu);
+        settings.setOpaque(false);
+        settings.setBounds(562,250,281,597);
 
-        settingsLabel = new JLabel("Paramètres");
-        settingsLabel.setFont(titleFont);
-        settings.add(settingsLabel);
 
-        settings.add(Box.createVerticalGlue());
 
         camSettings = new JButton("Paramètres caméra");
         camSettings.addActionListener(this);
         settings.add(camSettings);
-
-        settings.add(Box.createVerticalGlue());
-
+        settings.add(Box.createRigidArea(new Dimension(0,10)));
         accelSettings = new JButton("Paramètres accéléromètre");
         accelSettings.addActionListener(this);
+
         settings.add(accelSettings);
 
-        settings.add(Box.createVerticalGlue());
-
-        dBSettings = new JButton("Paramètres base de données");
-        dBSettings.addActionListener(this);
-
-        settings.add(Box.createVerticalGlue());
 
 
-       /* content.add(Box.createHorizontalGlue());
+
+
+
         content.add(status);
-        content.add(Box.createHorizontalGlue());
-        content.add(sep1);
-        content.add(Box.createHorizontalGlue());
         content.add(configuration);
-        content.add(Box.createHorizontalGlue());
-        content.add(sep2);
-        content.add(Box.createHorizontalGlue());
         content.add(settings);
-        content.add(Box.createHorizontalGlue());*/
 
-        this.setContentPane(background);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        this.setSize(13000, 5400);
-        //this.setResizable(false);
-      //  this.pack();
 
 
         this.setVisible(true);
@@ -260,70 +233,24 @@ public class ControlPanel extends JFrame implements ActionListener {
     }
 
 
-    public void userFileCreation() {
-        userNames = new File("UserNames.txt");
-
-    }
-
 
     public void newUser(int hue, String username, int saturation, int value) {
-        // ursername: nom écrit par l'utilisateur
-        userFile = new File(username + ".txt");
-        try {
-            //Création de l'objet
-            fw = new FileWriter("Usernames.txt", true);
-            String str = username;
-            fw.write(str);
-            fw.close();
 
-            fwFileCreation = new FileWriter(userFile);
-            String strB = username;
-            strB += "\t hue  : " + hue + "\n";
-            strB += "\t saturation  : " + saturation + "\n";
-            strB += "\t value : " + value + "\n";
-            fwFileCreation.write(str);
-            fwFileCreation.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 
-    public String readUser(String username) {
-        String strB = "";
-        try {
-            frFileCreation = new FileReader(username + ".txt");
-            int i = 0;
-            while ((i = fr.read()) != -1)
-                strB += (char) i;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return strB;
+    public void readUser(String username) {
+
     }
 
 
     public void eraseUser(String username) {
-        File user = new File(username + ".txt");
-        user.delete();
+
     }
 
 
-    public String[] readListUsers() throws Exception {
-        ArrayList<String> tmp = new ArrayList<String>();
-        Scanner scanner = new Scanner(userNames);
-        while (scanner.hasNextLine()) {
-            tmp.add(scanner.nextLine());
-        }
-        String[] ret = new String[tmp.size()];
-        for (int i = 0; i < tmp.size(); i++) {
-            ret[i] = tmp.get(i);
-        }
-        return ret;
+    public void readListUsers() throws Exception {
+
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -354,8 +281,4 @@ public class ControlPanel extends JFrame implements ActionListener {
 
     }
 }
-
-
-
-
 
