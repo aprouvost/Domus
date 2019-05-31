@@ -48,7 +48,7 @@ public class ControlPanel extends JFrame implements ActionListener {
 
     private VisualizationWindow camPanel;
     private DetectionMain hand;
-    // private fenetreBaseDonnee databasePanel;
+     private interrogBD database;
     // private fenetreAccelerometre acceleroPanel;
      public accelrecog.bluetooth bluetoothPannel;
     // private fenetreConnexion connexionPanel;
@@ -96,21 +96,6 @@ public class ControlPanel extends JFrame implements ActionListener {
         scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
-
-
-
-
-        /*{
-            Image background = Toolkit.getDefaultToolkit().createImage("imageFond.png");
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g); // paint the background image and scale it to fill the entire space
-                g.drawImage(background, 0, 0, null);
-
-
-            }
-        }*/
-
-        ;
         content.setLayout(new BoxLayout(content, SwingConstants.HORIZONTAL));
 
 
@@ -224,29 +209,10 @@ public class ControlPanel extends JFrame implements ActionListener {
 
         settings.add(Box.createVerticalGlue());
 
-
-       /* content.add(Box.createHorizontalGlue());
-        content.add(status);
-        content.add(Box.createHorizontalGlue());
-        content.add(sep1);
-        content.add(Box.createHorizontalGlue());
-        content.add(configuration);
-        content.add(Box.createHorizontalGlue());
-        content.add(sep2);
-        content.add(Box.createHorizontalGlue());
-        content.add(settings);
-        content.add(Box.createHorizontalGlue());*/
-
         this.setContentPane(background);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         this.setSize(13000, 5400);
-        //this.setResizable(false);
-      //  this.pack();
-
-
         this.setVisible(true);
-
 
     }
 
@@ -257,59 +223,6 @@ public class ControlPanel extends JFrame implements ActionListener {
         } else {
             //texte camera devient rouge
         }
-    }
-
-
-    public void userFileCreation() {
-        userNames = new File("UserNames.txt");
-
-    }
-
-
-    public void newUser(int hue, String username, int saturation, int value) {
-        // ursername: nom écrit par l'utilisateur
-        userFile = new File(username + ".txt");
-        try {
-            //Création de l'objet
-            fw = new FileWriter("Usernames.txt", true);
-            String str = username;
-            fw.write(str);
-            fw.close();
-
-            fwFileCreation = new FileWriter(userFile);
-            String strB = username;
-            strB += "\t hue  : " + hue + "\n";
-            strB += "\t saturation  : " + saturation + "\n";
-            strB += "\t value : " + value + "\n";
-            fwFileCreation.write(str);
-            fwFileCreation.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public String readUser(String username) {
-        String strB = "";
-        try {
-            frFileCreation = new FileReader(username + ".txt");
-            int i = 0;
-            while ((i = fr.read()) != -1)
-                strB += (char) i;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return strB;
-    }
-
-
-    public void eraseUser(String username) {
-        File user = new File(username + ".txt");
-        user.delete();
     }
 
 
@@ -333,7 +246,7 @@ public class ControlPanel extends JFrame implements ActionListener {
         if (e.getSource() == deleteUser) {
             eraseUser(usersList.getSelectedValue());
         }
-        if (e.getSource() == dBSettings) {
+        if (e.getSource() == ) {
             // settings for the database
         }
         if (e.getSource() == accelSettings) {

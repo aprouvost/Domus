@@ -2,6 +2,8 @@ package Domus;
 
 import Camera_P2I.DetectionMain;
 
+
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -52,6 +54,10 @@ public class TestImage extends JFrame implements ActionListener {
     private DetectionMain hand;
     public accelrecog.bluetooth bluetoothPannel;
 
+    private interrogBD baseDonnee;
+    private String actualUser = "";
+
+
 
 
 
@@ -64,20 +70,18 @@ public class TestImage extends JFrame implements ActionListener {
 
     public TestImage() throws IOException {
         setLayout(null);
-      content = new JLabel();
-      content.setIcon(new javax.swing.ImageIcon(getClass().getResource("imageFond.png")));
-      content.setBounds(0,0,855,597);
+        content = new JLabel();
+        content.setIcon(new javax.swing.ImageIcon(getClass().getResource("imageFond.png")));
+        content.setBounds(0,0,855,597);
 
 
-    this.add(content);
+        this.add(content);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.setSize(857, 597);
         this.setResizable(false);
 
-      //  this.setVisible(true);
-
-        hand= new DetectionMain();
+        hand = new DetectionMain();
         hand.getHandCoordinates();
 
         titleFont = new Font("Arial", Font.PLAIN, 24);
@@ -91,7 +95,8 @@ public class TestImage extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-
+        String[] list = (String[]) baseDonnee.recupererUsers().toArray();
+        usersList = new JList<String>(list);
         scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
@@ -109,15 +114,11 @@ public class TestImage extends JFrame implements ActionListener {
         status.setBounds(0,240, 281,597);
 
 
-
-
-
         handFollowed = new JLabel("Suivi main ?");
         handFollowed.setForeground(Color.red);
         handFollowed.setAlignmentX(0.5f);
         handFollowed.setBorder(statusBorder);
         status.add(handFollowed);
-        //handFollowed.setOpaque(false);
 
 
         bluetoothStatus = new JLabel("Bluetooth connecté ?");
@@ -125,7 +126,6 @@ public class TestImage extends JFrame implements ActionListener {
         bluetoothStatus.setAlignmentX(0.5f);
         bluetoothStatus.setBorder(statusBorder);
         status.add(bluetoothStatus);
-       // bluetoothStatus.setOpaque(false);
 
         camStatus = new JLabel("Caméra ok ?");
         camStatus.setForeground(Color.red);
@@ -255,28 +255,31 @@ public class TestImage extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addUser) {
-            newUser(hand.getHue(), chooseUserName.getText(), hand.getSatThresh(), hand.getValThresh());
+            baseDonnee.insertUserSettings( chooseUserName.getText(), hand.readPreferences());
+            String[] list = (String[]) baseDonnee.recupererUsers().toArray();
+            usersList = new JList<String>(list);
+            repaint();
         }
         if (e.getSource() == deleteUser) {
-            eraseUser(usersList.getSelectedValue());
-        }
-        if (e.getSource() == dBSettings) {
-            // settings for the database
+            baseDonnee.deleteUserSettings(actualUser);
         }
         if (e.getSource() == accelSettings) {
             // settings for the accelerometer
         }
         if (e.getSource() == camSettings) { // settings for the camera
             VisualizationWindow cam = new VisualizationWindow(hand);
+            (new Thread(cam)).start();
             camStatus.setForeground(Color.green);
         }
         if (checkHandFollowed.isSelected()) { // suivi de la main
             followed = true;
             handFollowed.setForeground(Color.green);
+            hand.setPanic(false);
         }
         if (!checkHandFollowed.isSelected()) { // Arret du suivi de la main
             followed = false;
             handFollowed.setForeground(Color.red);
+            hand.setPanic(true);
         }
 
     }
