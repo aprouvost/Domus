@@ -95,8 +95,12 @@ public class TestImage extends JFrame implements ActionListener {
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        String[] list = (String[]) baseDonnee.recupererUsers().toArray();
-        usersList = new JList<String>(list);
+        String[] list = null;
+        list = (String[]) baseDonnee.recupererUsers().toArray();
+        if(list != null)
+            usersList = new JList<String>(list);
+        else
+            usersList = new JList<String>();
         scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
@@ -257,11 +261,11 @@ public class TestImage extends JFrame implements ActionListener {
         if (e.getSource() == addUser) {
             baseDonnee.insertUserSettings( chooseUserName.getText(), hand.readPreferences());
             String[] list = (String[]) baseDonnee.recupererUsers().toArray();
-            usersList = new JList<String>(list);
+           usersList = new JList<String>(list);
             repaint();
         }
         if (e.getSource() == deleteUser) {
-            baseDonnee.deleteUserSettings(actualUser);
+           // baseDonnee.deleteUserSettings(actualUser);
         }
         if (e.getSource() == accelSettings) {
             // settings for the accelerometer
