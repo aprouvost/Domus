@@ -241,14 +241,12 @@ public class ControlPanel extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addUser) {
-            newUser(hand.getHue(), chooseUserName.getText(), hand.getSatThresh(), hand.getValThresh());
+            database.insertUserSettings(chooseUserName.getText(), hand.readPreferences());
         }
         if (e.getSource() == deleteUser) {
-            eraseUser(usersList.getSelectedValue());
+            database.deleteUserSettings(usersList.getSelectedValue());
         }
-        if (e.getSource() == ) {
-            // settings for the database
-        }
+
         if (e.getSource() == accelSettings) {
             // settings for the accelerometer
         }
