@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-      //  (new GraphicDisplay(new Gesture().mySets.get(0),new Gesture().mySets.get(0))).setVisible(true);
+        //  (new GraphicDisplay(new Gesture().mySets.get(0),new Gesture().mySets.get(0))).setVisible(true);
         GlobalListener myListener = new GlobalListener();
         BlueTooth myBlueTooth = new BlueTooth();
         myConnexion = new SerialConnexion();
@@ -26,7 +26,7 @@ public class Main {
             adelePanel =  new TestImage(accelUI,myBlueTooth);
         }catch (Exception e){
             adelePanel = null;
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         try {
@@ -73,7 +73,7 @@ public class Main {
                 } else if (myConnexion.isEndCamera()) {
                     System.out.println("Something went wrong end camera before start");
                     myConnexion.clearBuffer();
-                } else if (myConnexion.isMouvement() && accelUI.activated) {
+                } else if (myConnexion.isMouvement() && accelUI.activated){
                     System.out.println("computing");
                     accelUI.setState("Computing Mouvement");
                     System.out.println("end msg");
@@ -84,7 +84,8 @@ public class Main {
                             if(accelUI.userChoice.equals("MACRO")){
                                 newGesture.myShortCut.startRecord(accelUI);
                             }else{
-                                newGesture.myShortCut.newCmd(JOptionPane.showInputDialog("Enter Command"));
+                                commandConstructor interfaceCommand = new commandConstructor(newGesture);
+
                             }
                             history.add(newGesture);
                             for (Gesture dS : history) {
