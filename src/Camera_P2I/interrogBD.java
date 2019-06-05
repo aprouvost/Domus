@@ -23,7 +23,7 @@ public class interrogBD {
         adresseBD = "jdbc:mysql://PC-TP-MYSQL:3306";
         nomLogin = "G222_D";
         mdp = "G222_D";
-        initConnection();
+       // initConnection();
     }
 
    public void initConnection(){
@@ -83,6 +83,36 @@ public class interrogBD {
 
         }
     }
+    public boolean verifieUser(String idUser) {
+        try {
+            String usedb = "use G222_D_BD1";
+            String sqlStr = "select idUser FROM userGestures where idUser = ?";
+            PreparedStatement ps = conn.prepareStatement(sqlStr);
+            ps.setString(1, idUser);
+            Statement stmt = conn.createStatement();
+
+            //execution de la requete
+            stmt.executeQuery(usedb);
+            ResultSet res = ps.executeQuery();
+
+
+            while (res.next()) {
+                String nom = res.getString(1);
+
+                if(nom!=""){
+                    return true;
+                }
+            }
+            return false;
+
+        }
+        catch(Exception e){
+            infoBox(e.getMessage(),"Erreur");
+
+            return false;
+        }
+    }
+
     public int getLastReinforcementIndex(String idGesture){
         try {
             String usedb = "use G222_D_BD1";
@@ -600,7 +630,7 @@ public class interrogBD {
 
         }
         catch(Exception e){
-            infoBox(e.getMessage(),"Erreur");
+           // infoBox(e.getMessage(),"Erreur");
 
         }
         return null;
