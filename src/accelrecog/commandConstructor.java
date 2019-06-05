@@ -45,7 +45,7 @@ public class commandConstructor extends JFrame implements ActionListener{
 
 
             //liste des utilisateurs en contact
-            String[] actionsPossibles = {"lancer une application", "mettre en veille","fermer le processus actif","minimiser la fenêtre"};
+            String[] actionsPossibles = {"lancer une application", "mettre en veille","minimiser la fenêtre"};
 
             //création d'une combobox des possibilités de scripts différentes
             selectAction = new JComboBox<>(actionsPossibles);
@@ -100,9 +100,7 @@ public class commandConstructor extends JFrame implements ActionListener{
                     case "mettre en veille" :
                         command = "Rundll32.exe Powrprof.dll,SetSuspendState Sleep";
                         break;
-                    case "fermer le processus actif" :
-                        command = "";
-                        break;
+
                     case "minimiser la fenêtre" :
                         command = "powershell -command \"& { $x = New-Object -ComObject Shell.Application; $x.minimizeall() }\" ";
                         break;
