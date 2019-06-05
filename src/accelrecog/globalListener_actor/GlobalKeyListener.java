@@ -9,9 +9,9 @@ import org.jnativehook.keyboard.NativeKeyListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-public class GlobalKeyListenerExample implements NativeKeyListener {
+public class GlobalKeyListener implements NativeKeyListener {
     GlobalListener listener;
-    public GlobalKeyListenerExample(GlobalListener globalListener){
+    public GlobalKeyListener(GlobalListener globalListener){
         super();
         listener = globalListener;
     }

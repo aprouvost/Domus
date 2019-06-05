@@ -92,7 +92,7 @@ public class Interface extends JFrame implements ActionListener {
             public void windowClosing(WindowEvent winEvt) {
                 GlobalListener.closeListeners();
                 System.out.println("Closing");
-                (new interrogBD()).saveHistory(allgest,mainPanel.actualUser);
+              //  (new interrogBD()).saveHistory(allgest,mainPanel.actualUser);
                 System.exit(0);
             }
         });

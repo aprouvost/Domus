@@ -7,9 +7,9 @@ import org.jnativehook.mouse.NativeMouseInputListener;
 
 import java.awt.*;
 
-public class GlobalMouseListenerExample implements NativeMouseInputListener {
+public class GlobalMouseListener implements NativeMouseInputListener {
     GlobalListener listener;
-    public GlobalMouseListenerExample(GlobalListener globalListener){
+    public GlobalMouseListener(GlobalListener globalListener){
         super();
         listener = globalListener;
     }
