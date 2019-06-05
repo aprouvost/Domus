@@ -1,4 +1,4 @@
-package Camera_P2I;
+package global;
 
 import accelrecog.Data;
 import accelrecog.DataSet;

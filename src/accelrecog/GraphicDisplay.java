@@ -90,6 +90,6 @@ class CustomCanvas extends JPanel{
 
 
     private  Point getScreenCoord(double x, double y){
-        return new Point((int)((x/maxlen)*myWidth)+5,(int)((1-y)*myHeight*0.95-5));
+        return new Point((int)((x/maxlen)*myWidth)+5,(int)(((1-y)*2-1)*myHeight*0.95-5));
     }
 }

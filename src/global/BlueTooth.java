@@ -1,4 +1,4 @@
-package accelrecog;
+package global;
 
 public class BlueTooth {
 

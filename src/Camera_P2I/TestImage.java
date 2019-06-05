@@ -1,30 +1,17 @@
 package Camera_P2I;
 
-import Camera_P2I.DetectionMain;
-
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
-import java.awt.*;
-import javax.swing.*;
 //import javax.swing.Timer;
-import javax.swing.border.Border;
 
-import Camera_P2I.DetectionMain;
-import Camera_P2I.VisualizationWindow;
-import accelrecog.BlueTooth;
+import global.BlueTooth;
 import accelrecog.Interface;
+import global.interrogBD;
 
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.*;
 import java.awt.event.*;
 
 

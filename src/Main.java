@@ -1,11 +1,10 @@
 
 import Camera_P2I.TestImage;
 import accelrecog.*;
-import accelrecog.BlueTooth;
+import global.BlueTooth;
 import accelrecog.globalListener_actor.GlobalListener;
 import gnu.io.CommPortIdentifier;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -63,11 +62,16 @@ public class Main {
                 } else if (myConnexion.isStartCamera()) {
                     //here
                     do {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         //lect pos cam
                         //test click
                         //faire action
-
-                    } while (false);//is end camera
+                        //myConnexion.clearBuffer();
+                    } while (!myConnexion.isEndCamera());//is end camera
                     System.out.println("Starting camera mouse control");
                     myConnexion.clearBuffer();
                 } else if (myConnexion.isEndCamera()) {
@@ -85,7 +89,6 @@ public class Main {
                                 newGesture.myShortCut.startRecord(accelUI);
                             }else{
                                 commandConstructor interfaceCommand = new commandConstructor(newGesture);
-
                             }
                             history.add(newGesture);
                             for (Gesture dS : history) {
