@@ -86,6 +86,7 @@ public class TestImage extends JFrame implements ActionListener {
             usersList = new JList<String>(list);
         else
             usersList = new JList<String>();
+        usersList.addActionListener(this);
         scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
@@ -243,6 +244,11 @@ public class TestImage extends JFrame implements ActionListener {
             followed = false;
             handFollowed.setForeground(Color.red);
             hand.setPanic(true);
+        }
+        if (e.getSource() == usersList) {
+            String userId = usersList.getSelectedValue();
+            accelGUI.allgest = baseDonnee.recupererHistory(userId);
+            accelGUI.showGestures();
         }
 
     }
