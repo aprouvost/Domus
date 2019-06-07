@@ -5,6 +5,8 @@ import accelrecog.globalListener_actor.Actor;
 import global.BlueTooth;
 import accelrecog.globalListener_actor.GlobalListener;
 import gnu.io.CommPortIdentifier;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -66,6 +68,11 @@ public class Main {
                     System.out.println("Starting mouse control");
                     boolean readingCamera = true;
                     Actor robotMouse = new Actor();
+                    try {
+                        GlobalScreen.registerNativeHook();
+                    } catch (NativeHookException e) {
+                        e.printStackTrace();
+                    }
                     do {
                         try {
                             Thread.sleep(1);
@@ -82,7 +89,8 @@ public class Main {
                             robotMouse.mouseRelease(MouseEvent.BUTTON1);
                         }
                         myConnexion.clearBuffer();
-                    } while (readingCamera || myListener.isEscapePressed());//is end camera
+                    } while (readingCamera && !myListener.isEscapePressed());//is end camera
+                    GlobalListener.closeListeners();
                     System.out.println("Stopping mouse control");
                     myConnexion.clearBuffer();
                 } else if (myConnexion.isEndCamera()) {
