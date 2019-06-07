@@ -256,6 +256,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         String userId = usersList.getSelectedValue();
         accelGUI.allgest = baseDonnee.recupererHistory(userId);
         accelGUI.showGestures();
+        // you dumb fuck
     }
 }
 
