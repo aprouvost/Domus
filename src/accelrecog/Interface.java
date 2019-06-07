@@ -26,7 +26,7 @@ public class Interface extends JFrame implements ActionListener {
 
     public TestImage mainPanel;
 
-    private LinkedList<Gesture> allgest;
+    public LinkedList<Gesture> allgest;
 
 
     public Interface(LinkedList<Gesture> aGesture) {

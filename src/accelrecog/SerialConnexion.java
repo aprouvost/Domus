@@ -70,6 +70,7 @@ public class SerialConnexion {
     public boolean isEndCamera(){
         return mysr.stringBuffer.contains("B");
     }
+    public boolean isClick(){return mysr.stringBuffer.contains("Z");}
     public void clearBuffer(){
         mysr.stringBuffer="";
     }

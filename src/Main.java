@@ -70,12 +70,12 @@ public class Main {
                             e.printStackTrace();
                         }
                         adelePanel.hand.moveMouse();
-                        //lect pos cam
-                        //test click
-                        //faire action
-                        //myConnexion.clearBuffer();
+
+
                         if(myConnexion.isEndCamera()){
                             readingCamera=false;
+                        }else if(myConnexion.isClick()){
+
                         }
                         myConnexion.clearBuffer();
                     } while (readingCamera);//is end camera
