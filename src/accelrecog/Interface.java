@@ -25,7 +25,7 @@ public class Interface extends JFrame implements ActionListener {
     public boolean activated = true;
 
     public TestImage mainPanel;
-
+    public String user;
     public LinkedList<Gesture> allgest;
 
 

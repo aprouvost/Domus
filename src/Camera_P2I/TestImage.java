@@ -23,7 +23,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     private JPanel status, configuration, settings;
     private JButton test;
     private JLabel statusLabel, configLabel, settingsLabel, handFollowed, bluetoothStatus, camStatus;
-    private JButton camSettings, accelSettings, dBSettings, addUser, deleteUser;
+    private JButton camSettings, accelSettings, dBSettings, addUser, deleteUser, saveEverything;
     private JList<String> usersList;
     private String[] users;
     private JSeparator sep1, sep2;
@@ -155,6 +155,10 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         addUser.addActionListener(this);
         boutonsConfig.add(addUser);
 
+        saveEverything = new JButton("Sauvegarder les paramètres");
+        saveEverything.addActionListener(this);
+        boutonsConfig.add(saveEverything);
+
         chooseUserName = new JTextField("Nom du nouvel utilisateur");
         chooseUserName.addActionListener(this);
         boutonsConfig.add(chooseUserName);
@@ -248,6 +252,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     public void valueChanged(ListSelectionEvent e) {
         String userId = usersList.getSelectedValue();
         accelGUI.allgest = baseDonnee.recupererHistory(userId);
+        accelGUI.user = userId;
         accelGUI.showGestures();
     }
 
