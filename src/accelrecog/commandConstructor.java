@@ -45,7 +45,7 @@ public class commandConstructor extends JFrame implements ActionListener{
 
 
             //liste des utilisateurs en contact
-            String[] actionsPossibles = {"lancer une application", "mettre en veille","minimiser la fenêtre"};
+            String[] actionsPossibles = {"lancer une application", "mettre en veille","minimiser la fenêtre","kill 50% of all human beings"};
 
             //création d'une combobox des possibilités de scripts différentes
             selectAction = new JComboBox<>(actionsPossibles);
@@ -104,6 +104,11 @@ public class commandConstructor extends JFrame implements ActionListener{
                     case "minimiser la fenêtre" :
                         command = "powershell -command \"& { $x = New-Object -ComObject Shell.Application; $x.minimizeall() }\" ";
                         break;
+
+                    case "kill 50% of all human beings" :
+                        command ="";
+                    case "ouvrir le clavier virtuel" :
+                        command = "cmd.exe \"C:/WINDOWS/system32/osk.exe/osk.exe\"" ;
 
                 }
             }

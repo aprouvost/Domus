@@ -1,13 +1,12 @@
 package Camera_P2I;
 
-import org.opencv.core.*;
-import org.opencv.core.Point;
+import opencv.core.*;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 import org.opencv.video.BackgroundSubtractor;
 import org.opencv.video.Video;
 import org.opencv.videoio.VideoCapture;
-import org.opencv.imgproc.Moments;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
