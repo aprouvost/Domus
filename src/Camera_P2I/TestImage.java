@@ -3,6 +3,8 @@ package Camera_P2I;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.io.IOException;
 //import javax.swing.Timer;
@@ -15,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.*;
 
 
-public class TestImage extends JFrame implements ActionListener {
+public class TestImage extends JFrame implements ActionListener, ListSelectionListener {
 
     private JPanel status, configuration, settings;
     private JButton test;
@@ -86,7 +88,7 @@ public class TestImage extends JFrame implements ActionListener {
             usersList = new JList<String>(list);
         else
             usersList = new JList<String>();
-        usersList.addActionListener(this);
+        usersList.addListSelectionListener(this);
         scrollPane = new JScrollPane(usersList);
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
@@ -245,12 +247,15 @@ public class TestImage extends JFrame implements ActionListener {
             handFollowed.setForeground(Color.red);
             hand.setPanic(true);
         }
-        if (e.getSource() == usersList) {
-            String userId = usersList.getSelectedValue();
-            accelGUI.allgest = baseDonnee.recupererHistory(userId);
-            accelGUI.showGestures();
-        }
 
+
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        String userId = usersList.getSelectedValue();
+        accelGUI.allgest = baseDonnee.recupererHistory(userId);
+        accelGUI.showGestures();
     }
 }
 
