@@ -21,6 +21,10 @@ public class Shortcut {
         listener = globalListener;
     }
 
+    public Shortcut(ArrayList<ActionR> myActions){
+        this.myActions = myActions;
+    }
+
     public void run(){
         robot = new Actor();
         for(int i = 0;i<myActions.size();i++){

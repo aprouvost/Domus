@@ -3,6 +3,7 @@ package global;
 import accelrecog.Data;
 import accelrecog.DataSet;
 import accelrecog.Gesture;
+import accelrecog.Shortcut;
 import accelrecog.globalListener_actor.AType;
 import accelrecog.globalListener_actor.ActionR;
 
@@ -376,7 +377,6 @@ public class interrogBD {
         }
         return new DataSet(new ArrayList<Data>(), "null");
     }
-
     public Gesture recupererGesture(String idGesture, String nomGeste) {
         try {
             String usedb = "use G222_D_BD1";
@@ -403,24 +403,27 @@ public class interrogBD {
 
             int i =0;
             while (res.next()) {
-                 reinforcements[i] = res.getString(1);
-                 i++;
+                reinforcements[i] = res.getString(1);
+                i++;
             }
 
             LinkedList<DataSet> mySets = new LinkedList<>();
             for (int j =0; j<reinforcements.length; j++){
                 mySets.add(recupererDataset(idGesture, reinforcements[j]));
             }
-           Gesture gesture = new Gesture(mySets, nomGeste,null);
+            Shortcut raccourci = new Shortcut(recupererActions(idGesture));
+            Gesture gesture = new Gesture(mySets, nomGeste, raccourci);
             return gesture;
 
 
         }
         catch(Exception e){
             infoBox(e.getMessage(),"Erreur");
-
+            ArrayList<ActionR> actions = new ArrayList<>();
+            Shortcut raccourci = new Shortcut(actions);
+            return new Gesture(new LinkedList<DataSet>(), "null", raccourci);
         }
-        return new Gesture(new LinkedList<DataSet>(), "null",null);
+
     }
 
     public  LinkedList<Gesture> recupererHistory(String idUser) {
