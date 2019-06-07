@@ -15,6 +15,7 @@ import global.interrogBD;
 
 import java.awt.event.ActionListener;
 import java.awt.event.*;
+import java.util.LinkedList;
 
 
 public class TestImage extends JFrame implements ActionListener, ListSelectionListener {
@@ -78,19 +79,11 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        String[] list = null;
-        try {
-            list = (String[]) baseDonnee.recupererUsers().toArray();
-        } catch (Exception e) {
 
-        }
+        usersList = new JList<String>();
+        scrollPane = new JScrollPane();
 
-        if (list != null)
-            usersList = new JList<String>(list);
-        else
-            usersList = new JList<String>();
-        usersList.addListSelectionListener(this);
-        scrollPane = new JScrollPane(usersList);
+        updateUsersList();
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
 
@@ -223,8 +216,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addUser) {
             baseDonnee.insertUserSettings(chooseUserName.getText(), hand.readPreferences());
-            String[] list = (String[]) baseDonnee.recupererUsers().toArray();
-            usersList = new JList<String>(list);
+            updateUsersList();
             repaint();
         }
         if (e.getSource() == deleteUser) {
@@ -257,6 +249,28 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         String userId = usersList.getSelectedValue();
         accelGUI.allgest = baseDonnee.recupererHistory(userId);
         accelGUI.showGestures();
+    }
+
+    private void updateUsersList(){
+
+        LinkedList<String> a = null;
+
+        a = baseDonnee.recupererUsers();
+
+        if(a != null){
+
+            String[] l = a.toArray(new String[]{});
+            usersList = new JList<String>(l);
+            usersList.addListSelectionListener(this);
+
+        }else {
+
+            usersList = new JList<String>();
+
+        }
+
+        scrollPane = new JScrollPane(usersList);
+
     }
 }
 

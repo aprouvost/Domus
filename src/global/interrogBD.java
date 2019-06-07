@@ -24,7 +24,7 @@ public class interrogBD {
         adresseBD = "jdbc:mysql://PC-TP-MYSQL:3306";
         nomLogin = "G222_D";
         mdp = "G222_D";
-       // initConnection();
+       initConnection();
     }
 
    public void initConnection(){
@@ -549,9 +549,9 @@ public class interrogBD {
             ps1.executeUpdate();
 
         }
-        catch(Exception e){
+        catch(Exception e) {
 
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -570,7 +570,7 @@ public class interrogBD {
         }
         catch(Exception e){
 
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
