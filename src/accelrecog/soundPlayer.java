@@ -21,16 +21,8 @@ public class soundPlayer {
             case "loginSound":
                 typedeSon = loginSound;
                 break;
-            case "envoi":
-                typedeSon = envoi;
-                break;
-
-            case "reception":
-                typedeSon = reception;
-                break;
-
-            case "gf":
-                typedeSon = gf;
+            case "killEveryone":
+                typedeSon = killEveryone;
 
         }
         try {
