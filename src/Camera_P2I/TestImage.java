@@ -36,7 +36,7 @@ public class TestImage extends JFrame implements ActionListener {
 
 
     //private VisualizationWindow camPanel;
-    private DetectionMain hand;
+    public DetectionMain hand;
     public BlueTooth bluetoothPanel;
 
     private interrogBD baseDonnee;

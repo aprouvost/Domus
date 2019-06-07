@@ -70,6 +70,7 @@ public class Interface extends JFrame implements ActionListener {
         learnedSets = new JList(listOfGest);
         learnedSets.setBounds(50, 400, 500, 100);
         accelSettings.add(learnedSets);
+        showGestures();
 
         deleteMouvement = new JButton("Delete Mouvement");
         deleteMouvement.setBackground(Color.red);

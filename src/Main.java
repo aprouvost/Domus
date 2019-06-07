@@ -5,6 +5,7 @@ import global.BlueTooth;
 import accelrecog.globalListener_actor.GlobalListener;
 import gnu.io.CommPortIdentifier;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -60,19 +61,25 @@ public class Main {
                     myBlueTooth.receivedPing();
                     myConnexion.clearBuffer();
                 } else if (myConnexion.isStartCamera()) {
-                    //here
+                    System.out.println("Starting mouse control");
+                    boolean readingCamera = true;
                     do {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        adelePanel.hand.moveMouse();
                         //lect pos cam
                         //test click
                         //faire action
                         //myConnexion.clearBuffer();
-                    } while (!myConnexion.isEndCamera());//is end camera
-                    System.out.println("Starting camera mouse control");
+                        if(myConnexion.isEndCamera()){
+                            readingCamera=false;
+                        }
+                        myConnexion.clearBuffer();
+                    } while (readingCamera);//is end camera
+                    System.out.println("Stopping mouse control");
                     myConnexion.clearBuffer();
                 } else if (myConnexion.isEndCamera()) {
                     System.out.println("Something went wrong end camera before start");
