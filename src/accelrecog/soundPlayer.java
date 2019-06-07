@@ -4,7 +4,7 @@ package accelrecog;
 import javax.sound.sampled.*;
 import java.io.IOException;
 
-public class soundPlayer {
+public class soundPlayer{
     String loginSound;
     String killEveryone;
 
