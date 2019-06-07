@@ -42,24 +42,24 @@ public class interrogBD {
             System.exit(0);
         }
     }
-
-    public void savefirstHistory(LinkedList<Gesture> listeGestes, String idUser){
+    public void savefirstHistory(LinkedList<Gesture> listeGestes, ArrayList<ActionR> actions, String idUser){
         for(int i =0; i<listeGestes.size();i++){
             String uniqueID = UUID.randomUUID().toString();
             for(int j = 0; j<listeGestes.get(i).mySets.size(); j++){
                 insertDataset(uniqueID, listeGestes.get(i).mySets.get(j).myData);
             }
             insertGesture(idUser, listeGestes.get(i).myName, uniqueID);
+            insertActions(uniqueID, actions);
 
         }
     }
 
-    public void saveHistory(LinkedList<Gesture> listeGestes, String idUser){
+    public void saveHistory(LinkedList<Gesture> listeGestes, String idUser, ArrayList<ActionR> actions){
         int i = getLastGestureIndex(idUser);
 
         if(i==0){
             // jamais sauvegardé
-            savefirstHistory(listeGestes, idUser);
+            savefirstHistory(listeGestes,  actions, idUser);
 
         }else{
             //mettre à jour les gestures déjà sauvegardés : ajouter les derniers reinforcement
@@ -76,6 +76,7 @@ public class interrogBD {
             for(int j = i; j<listeGestes.size(); j++){
                 String uniqueID = UUID.randomUUID().toString();
                 insertGesture(idUser, listeGestes.get(j).myName, uniqueID);
+                insertActions(uniqueID, actions);
                 for(int c = 0 ; c<listeGestes.get(j).mySets.size() ; c++){
                     insertDataset(uniqueID, listeGestes.get(j).mySets.get(c).myData);
                 }
