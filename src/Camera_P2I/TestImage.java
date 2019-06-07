@@ -47,6 +47,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
 
 
     public TestImage(Interface aGUI,BlueTooth mBT) throws IOException {
+        baseDonnee = new interrogBD();
         accelGUI = aGUI;
         bluetoothPanel = mBT;
         accelGUI.mainPanel = this;
@@ -256,7 +257,6 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         String userId = usersList.getSelectedValue();
         accelGUI.allgest = baseDonnee.recupererHistory(userId);
         accelGUI.showGestures();
-        // you dumb fuck
     }
 }
 
