@@ -1,6 +1,7 @@
 package Camera_P2I;
 
-import opencv.core.*;
+import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.highgui.HighGui;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;

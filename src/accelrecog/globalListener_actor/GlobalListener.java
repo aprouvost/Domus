@@ -11,6 +11,7 @@ public class GlobalListener {
     private GlobalMouseListener mouseListener;
     public LinkedList<ActionR> userActions = new LinkedList<>();
     public Shortcut myShortCut;
+    private boolean escapePressed = false;
 
     public GlobalListener(){
         keyListener = new GlobalKeyListener(this);
@@ -30,6 +31,15 @@ public class GlobalListener {
         if(myShortCut!=null){
             myShortCut.stopRecord();
             myShortCut=null;
+        }else{
+            escapePressed = true;
         }
+    }
+    public boolean isEscapePressed(){
+        if(escapePressed){
+            escapePressed=false;
+            return true;
+        }
+        return false;
     }
 }

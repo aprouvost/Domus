@@ -1,6 +1,7 @@
 
 import Camera_P2I.TestImage;
 import accelrecog.*;
+import accelrecog.globalListener_actor.Actor;
 import global.BlueTooth;
 import accelrecog.globalListener_actor.GlobalListener;
 import gnu.io.CommPortIdentifier;
@@ -63,9 +64,10 @@ public class Main {
                 } else if (myConnexion.isStartCamera()) {
                     System.out.println("Starting mouse control");
                     boolean readingCamera = true;
+                    Actor robotMouse = new Actor();
                     do {
                         try {
-                            Thread.sleep(100);
+                            Thread.sleep(1);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -75,10 +77,10 @@ public class Main {
                         if(myConnexion.isEndCamera()){
                             readingCamera=false;
                         }else if(myConnexion.isClick()){
-
+                            robotMouse.mousePress(0);
                         }
                         myConnexion.clearBuffer();
-                    } while (readingCamera);//is end camera
+                    } while (readingCamera || myListener.isEscapePressed());//is end camera
                     System.out.println("Stopping mouse control");
                     myConnexion.clearBuffer();
                 } else if (myConnexion.isEndCamera()) {
