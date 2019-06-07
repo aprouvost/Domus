@@ -6,6 +6,7 @@ import global.BlueTooth;
 import accelrecog.globalListener_actor.GlobalListener;
 import gnu.io.CommPortIdentifier;
 
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -77,7 +78,8 @@ public class Main {
                         if(myConnexion.isEndCamera()){
                             readingCamera=false;
                         }else if(myConnexion.isClick()){
-                            robotMouse.mousePress(0);
+                            robotMouse.mousePress(MouseEvent.BUTTON1);
+                            robotMouse.mouseRelease(MouseEvent.BUTTON1);
                         }
                         myConnexion.clearBuffer();
                     } while (readingCamera || myListener.isEscapePressed());//is end camera
