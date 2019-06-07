@@ -126,7 +126,7 @@ public class commandConstructor extends JFrame implements ActionListener{
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
                     urlProgramme = file.getAbsolutePath();
-                    command = "cmd.exe \""+urlProgramme+"\"";
+                    command = "\""+urlProgramme+"\"";
                     createScript.setVisible(true);
                     creer.setVisible(false);
                 }
