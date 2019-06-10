@@ -50,7 +50,7 @@ public class SerialConnexion {
     }
 
     public boolean dataIncoming(){
-        return mysr.stringLength()>1;
+        return (mysr.stringLength()>1)&&(mysr.reset==false);
     }
     public boolean dataEnding(){
         return mysr.checkForEnd();

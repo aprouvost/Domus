@@ -21,9 +21,9 @@ public class interrogBD {
     Connection conn;
 
     public interrogBD(){
-        adresseBD = "jdbc:mysql://PC-TP-MYSQL:3306";
-        nomLogin = "G222_D";
-        mdp = "G222_D";
+        adresseBD = "jdbc:mysql://remotemysql.com:3306";
+        nomLogin = "OThWXKoKWM";
+        mdp = "6Kn8Qx9qSD";
        initConnection();
     }
 
@@ -42,24 +42,24 @@ public class interrogBD {
             System.exit(0);
         }
     }
-    public void savefirstHistory(LinkedList<Gesture> listeGestes, ArrayList<ActionR> actions, String idUser){
+    public void savefirstHistory(LinkedList<Gesture> listeGestes, String idUser){
         for(int i =0; i<listeGestes.size();i++){
             String uniqueID = UUID.randomUUID().toString();
             for(int j = 0; j<listeGestes.get(i).mySets.size(); j++){
                 insertDataset(uniqueID, listeGestes.get(i).mySets.get(j).myData);
             }
             insertGesture(idUser, listeGestes.get(i).myName, uniqueID);
-            insertActions(uniqueID, actions);
+            insertActions(uniqueID, listeGestes.get(i).myShortCut.myActions);
 
         }
     }
 
-    public void saveHistory(LinkedList<Gesture> listeGestes, String idUser, ArrayList<ActionR> actions){
+    public void saveHistory(LinkedList<Gesture> listeGestes, String idUser){
         int i = getLastGestureIndex(idUser);
 
         if(i==0){
             // jamais sauvegardé
-            savefirstHistory(listeGestes,  actions, idUser);
+            savefirstHistory(listeGestes, idUser);
 
         }else{
             //mettre à jour les gestures déjà sauvegardés : ajouter les derniers reinforcement
@@ -75,11 +75,12 @@ public class interrogBD {
             // ceux depuis l'indice n'ont jamais été sauvegardé
             for(int j = i; j<listeGestes.size(); j++){
                 String uniqueID = UUID.randomUUID().toString();
-                insertGesture(idUser, listeGestes.get(j).myName, uniqueID);
-                insertActions(uniqueID, actions);
                 for(int c = 0 ; c<listeGestes.get(j).mySets.size() ; c++){
                     insertDataset(uniqueID, listeGestes.get(j).mySets.get(c).myData);
                 }
+                insertGesture(idUser, listeGestes.get(j).myName, uniqueID);
+                insertActions(uniqueID, listeGestes.get(j).myShortCut.myActions);
+
             }
 
 
@@ -87,7 +88,7 @@ public class interrogBD {
     }
     public boolean verifieUser(String idUser) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
             String sqlStr = "select idUser FROM userGestures where idUser = ?";
             PreparedStatement ps = conn.prepareStatement(sqlStr);
             ps.setString(1, idUser);
@@ -117,7 +118,7 @@ public class interrogBD {
 
     public int getLastReinforcementIndex(String idGesture){
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -142,7 +143,7 @@ public class interrogBD {
 
     public int getLastGestureIndex(String idUser){
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -167,7 +168,7 @@ public class interrogBD {
 
     public void insertGesture(String idUser, String nomGeste, String idGesture) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -190,7 +191,7 @@ public class interrogBD {
         String uniqueID = UUID.randomUUID().toString();
 
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -213,7 +214,7 @@ public class interrogBD {
         String uniqueID = UUID.randomUUID().toString();
 
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
             Statement stmt = conn.createStatement();
             //execution de la requete
             stmt.executeQuery(usedb);
@@ -253,7 +254,7 @@ public class interrogBD {
 
     public void insertActions(String idGesture, ArrayList<ActionR> actions) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -268,12 +269,20 @@ public class interrogBD {
                 if(actions.get(i).mousePos!=null){
                     ps1.setInt(4, actions.get(i).mousePos.x);
                     ps1.setInt(5, actions.get(i).mousePos.y);
+                }else{
+                    ps1.setInt(4, 0);
+                    ps1.setInt(5, 0);
                 }
+
                 if(actions.get(i).code != 0){
                     ps1.setInt(6, actions.get(i).code);
+                }else{
+                    ps1.setInt(6, 0);
                 }
                 if(actions.get(i).cmd!=null){
                     ps1.setString(7,actions.get(i).cmd);
+                }else{
+                    ps1.setString(7,"");
                 }
 
                 ps1.executeUpdate();
@@ -304,7 +313,7 @@ public class interrogBD {
 
     public Data recupererData(String idReinforcement, int n) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -338,7 +347,7 @@ public class interrogBD {
 
     public DataSet recupererDataset(String idGesture, String idReinforcement) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -380,7 +389,7 @@ public class interrogBD {
     }
     public Gesture recupererGesture(String idGesture, String nomGeste) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -429,7 +438,7 @@ public class interrogBD {
 
     public  LinkedList<Gesture> recupererHistory(String idUser) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -469,7 +478,7 @@ public class interrogBD {
     public ArrayList<ActionR> recupererActions(String idGesture) {
         ArrayList<ActionR> listeActions = new ArrayList<>();
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -534,7 +543,7 @@ public class interrogBD {
     }
     public void insertUserSettings(String username, String[] prefs) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
             Statement stmt = conn.createStatement();
 
             //execution de la requete
@@ -557,7 +566,7 @@ public class interrogBD {
 
     public void deleteUserSettings(String username) {
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
             Statement stmt = conn.createStatement();
 
             //execution de la requete
@@ -578,7 +587,7 @@ public class interrogBD {
 
     public String[] recupererData(String username){
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete
@@ -612,7 +621,7 @@ public class interrogBD {
 
     public LinkedList<String> recupererUsers(){
         try {
-            String usedb = "use G222_D_BD1";
+            String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
             //execution de la requete

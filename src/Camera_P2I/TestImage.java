@@ -9,6 +9,7 @@ import java.awt.*;
 import java.io.IOException;
 //import javax.swing.Timer;
 
+import accelrecog.Gesture;
 import global.BlueTooth;
 import accelrecog.Interface;
 import global.interrogBD;
@@ -83,7 +84,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         usersList = new JList<String>();
         scrollPane = new JScrollPane();
 
-        updateUsersList();
+       updateUsersList();
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
 
 
@@ -226,6 +227,10 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         if (e.getSource() == deleteUser) {
             // baseDonnee.deleteUserSettings(actualUser);
         }
+        if (e.getSource() == saveEverything) {
+            System.out.println("saving");
+            baseDonnee.saveHistory(accelGUI.allgest, accelGUI.user);
+        }
         if (e.getSource() == accelSettings) {
             accelGUI.setVisible(true);
         }
@@ -251,9 +256,14 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     @Override
     public void valueChanged(ListSelectionEvent e) {
         String userId = usersList.getSelectedValue();
-        accelGUI.allgest = baseDonnee.recupererHistory(userId);
+        for (Gesture geste: accelGUI.allgest
+             ) {
+            System.out.println(geste.myName);
+        };
+
         accelGUI.user = userId;
         accelGUI.showGestures();
+        System.out.println("utilisateur sélectionné");
     }
 
     private void updateUsersList(){

@@ -101,7 +101,9 @@ public class Main {
                     accelUI.setState("Computing Mouvement");
                     System.out.println("end msg");
                     //diff settings
+
                     switch (accelUI.isLearning) {
+
                         case 'g':
                             Gesture newGesture = new Gesture(myConnexion.rawDataArr(), accelUI.dataName + "", myListener);
                             if(accelUI.userChoice.equals("MACRO")){
@@ -117,6 +119,7 @@ public class Main {
                             }
                             inc++;
                             break;
+
                         case 't':
                             DataSet dataTotest = myConnexion.rawData("testData");
 

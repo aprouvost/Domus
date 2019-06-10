@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Shortcut {
     GlobalListener listener;
     Actor robot;
-    ArrayList<ActionR> myActions = new ArrayList<>();
+    public ArrayList<ActionR> myActions = new ArrayList<>();
     private Interface tempGUI;
     public Shortcut(GlobalListener globalListener){
         listener = globalListener;
