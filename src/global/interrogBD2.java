@@ -336,12 +336,12 @@ public class interrogBD2 {
             ResultSet res3 = ps3.executeQuery();
             ArrayList<Data> myData = new ArrayList<Data>();
             while (res3.next()){
-            double accX = res.getDouble("accX");
-            double accY = res.getDouble("accY");
-            double accZ = res.getDouble("accZ");
-            boolean flexMajeur = res.getBoolean("flexMajeur");
-            boolean flexAnnul = res.getBoolean("flexAnnul");
-            boolean flexAuric = res.getBoolean("flexAuric");
+            double accX = res3.getDouble("accX");
+            double accY = res3.getDouble("accY");
+            double accZ = res3.getDouble("accZ");
+            boolean flexMajeur = res3.getBoolean("flexMajeur");
+            boolean flexAnnul = res3.getBoolean("flexAnnul");
+            boolean flexAuric = res3.getBoolean("flexAuric");
 
             Data madonnee = new Data(accX, accY, accZ, getvOut(flexMajeur), getvOut(flexAnnul), getvOut(flexAuric));
             myData.add(madonnee);
