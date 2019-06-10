@@ -81,7 +81,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
             e.printStackTrace();
         }
 
-        usersList = new JList<String>();
+        usersList = new JList<String>(new DefaultListModel<String>());
         scrollPane = new JScrollPane();
 
        updateUsersList();
@@ -275,16 +275,17 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         if(a != null){
 
             String[] l = a.toArray(new String[]{});
-            usersList = new JList<String>(l);
-            usersList.addListSelectionListener(this);
+            usersList.clearSelection();
+            for ( int i = 0 ; i<a.size(); i++) {
+                ((DefaultListModel)usersList.getModel()).addElement(a.get(i));
+            }
 
         }else {
 
-            usersList = new JList<String>();
 
         }
 
-        scrollPane = new JScrollPane(usersList);
+    //    scrollPane = new JScrollPane(usersList);
 
     }
 }
