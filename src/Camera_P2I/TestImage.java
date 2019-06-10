@@ -82,7 +82,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         }
 
         usersList = new JList<String>(new DefaultListModel<String>());
-        scrollPane = new JScrollPane();
+        scrollPane = new JScrollPane(usersList);
 
        updateUsersList();
         Border sepBorder = BorderFactory.createEmptyBorder(10, 0, 10, 0);
@@ -229,6 +229,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         }
         if (e.getSource() == saveEverything) {
             System.out.println("saving");
+            accelGUI.user = usersList.getSelectedValue();
             baseDonnee.saveHistory(accelGUI.allgest, accelGUI.user);
         }
         if (e.getSource() == accelSettings) {
@@ -275,7 +276,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         if(a != null){
 
             String[] l = a.toArray(new String[]{});
-            usersList.clearSelection();
+            usersList.re;
             for ( int i = 0 ; i<a.size(); i++) {
                 ((DefaultListModel)usersList.getModel()).addElement(a.get(i));
             }
@@ -285,7 +286,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
 
         }
 
-    //    scrollPane = new JScrollPane(usersList);
+    //  scrollPane = new JScrollPane(usersList);
 
     }
 }
