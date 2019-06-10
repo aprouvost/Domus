@@ -483,7 +483,7 @@ public class interrogBD {
             Statement stmt = conn.createStatement();
             //execution de la requete
             stmt.executeQuery(usedb);
-            String sqlStr = "select indexAction, myType, coordX, coordY, codeClavier, cmdCode FROM actions where idGesture = ? group by idGesture order by asc indexAction";
+            String sqlStr = "select indexAction, myType, coordX, coordY, codeClavier, cmdCode FROM actions where idGesture = ? group by idGesture order by indexAction";
             PreparedStatement ps = conn.prepareStatement(sqlStr);
             ps.setString(1, idGesture);
 
