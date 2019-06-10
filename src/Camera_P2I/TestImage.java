@@ -13,6 +13,7 @@ import accelrecog.Gesture;
 import global.BlueTooth;
 import accelrecog.Interface;
 import global.interrogBD;
+import global.interrogBD2;
 
 import java.awt.event.ActionListener;
 import java.awt.event.*;
@@ -34,6 +35,7 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     private JTextField chooseUserName;
     private JLabel content;
     private boolean followed;
+    private DefaultListModel listOfUsers = new DefaultListModel();
 
 
     //private boolean connexionEstablished;
@@ -43,13 +45,13 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     public DetectionMain hand;
     public BlueTooth bluetoothPanel;
 
-    private interrogBD baseDonnee;
+    private interrogBD2 baseDonnee;
     public String actualUser = "";
     public Interface accelGUI;
 
 
     public TestImage(Interface aGUI,BlueTooth mBT) throws IOException {
-        baseDonnee = new interrogBD();
+        baseDonnee = new interrogBD2();
         accelGUI = aGUI;
         bluetoothPanel = mBT;
         accelGUI.mainPanel = this;
@@ -81,7 +83,8 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
             e.printStackTrace();
         }
 
-        usersList = new JList<String>(new DefaultListModel<String>());
+        usersList = new JList<String>(listOfUsers);
+        usersList.addListSelectionListener(this);
         scrollPane = new JScrollPane(usersList);
 
        updateUsersList();
@@ -257,12 +260,13 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
     @Override
     public void valueChanged(ListSelectionEvent e) {
         String userId = usersList.getSelectedValue();
-        for (Gesture geste: accelGUI.allgest
-             ) {
+        for (Gesture geste: accelGUI.allgest) {
             System.out.println(geste.myName);
         };
-
         accelGUI.user = userId;
+
+        accelGUI.allgest.clear();
+        accelGUI.allgest.addAll(baseDonnee.recupererHistory(userId));
         accelGUI.showGestures();
         System.out.println("utilisateur sélectionné");
     }
@@ -276,9 +280,9 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         if(a != null){
 
             String[] l = a.toArray(new String[]{});
-            usersList.re;
+            listOfUsers.clear();
             for ( int i = 0 ; i<a.size(); i++) {
-                ((DefaultListModel)usersList.getModel()).addElement(a.get(i));
+               listOfUsers.addElement(a.get(i));
             }
 
         }else {

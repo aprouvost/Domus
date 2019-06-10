@@ -389,6 +389,7 @@ public class interrogBD {
     }
     public Gesture recupererGesture(String idGesture, String nomGeste) {
         try {
+            System.out.println(nomGeste + "0000");
             String usedb = "use OThWXKoKWM";
 
             Statement stmt = conn.createStatement();
@@ -507,7 +508,6 @@ public class interrogBD {
                     codeClavier = res.getInt("codeClavier");
                     cmdCode = res.getString("cmdCode");
                     ActionR action;
-
                     switch(myType){
                         default:
                            // action = new ActionR(AType.MOUSEPRESS);

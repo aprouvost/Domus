@@ -507,7 +507,7 @@ public class interrogBD2 {
                         case "KEYRELEASE" : action = new ActionR(AType.KEYRELEASE, codeClavier);
                             break;
 
-                        case "CMD" : action = new ActionR(cmdCode);
+                        case "COMMAND" : action = new ActionR(cmdCode);
                         break;
                     }
                     listeActions.add(action);

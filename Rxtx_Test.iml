@@ -11,5 +11,6 @@
     <orderEntry type="library" name="jnativehook-2.1.0" level="project" />
     <orderEntry type="library" name="opencv-410" level="project" />
     <orderEntry type="library" name="RXTXcomm" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.46-bin" level="project" />
   </component>
 </module>
