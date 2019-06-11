@@ -18,6 +18,7 @@ public class commandConstructor extends JFrame implements ActionListener{
     JFileChooser fc;
     String command;
     Gesture newgesture;
+    JTextField customCommand;
 
         public commandConstructor(Gesture gesture){
             newgesture=gesture;
@@ -45,7 +46,7 @@ public class commandConstructor extends JFrame implements ActionListener{
 
 
             //liste des utilisateurs en contact
-            String[] actionsPossibles = {"lancer une application", "mettre en veille","minimiser la fenêtre","kill 50% of all human beings"};
+            String[] actionsPossibles = {"lancer une application", "mettre en veille","minimiser la fenêtre","kill 50% of all human beings","écrire une commande","ouvrir le clavier virtuel"};
 
             //création d'une combobox des possibilités de scripts différentes
             selectAction = new JComboBox<>(actionsPossibles);
@@ -60,7 +61,12 @@ public class commandConstructor extends JFrame implements ActionListener{
             createScript.setText("Créer le script");
             createScript.addActionListener(this);
 
-            // sélectionner un programme à lancer
+            // écrire sa propre commande
+            customCommand = new JTextField();
+            customCommand.setSize(200,30);
+            customCommand.setLocation(300,100);
+            customCommand.setText("Écrire la commande");
+            customCommand.setVisible(false);
 
 
             // bouton permettant de sélectionner une app
@@ -110,10 +116,16 @@ public class commandConstructor extends JFrame implements ActionListener{
                     case "ouvrir le clavier virtuel" :
                         command = "\"C:/WINDOWS/system32/osk.exe/osk.exe\"" ;
 
+                    case "\"écrire une commande\"" :
+                        customCommand.setVisible(true);
+
                 }
             }
-            if(e.getSource()== createScript){
+            if(e.getSource()== createScript &&customCommand.isVisible()==false){
                 newgesture.myShortCut.newCmd(command);
+                dispose();
+            }else{
+                newgesture.myShortCut.newCmd(customCommand.getText());
                 dispose();
             }
 
