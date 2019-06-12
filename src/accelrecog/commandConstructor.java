@@ -113,11 +113,14 @@ public class commandConstructor extends JFrame implements ActionListener{
 
                     case "kill 50% of all human beings" :
                         command ="";
+                        break;
                     case "ouvrir le clavier virtuel" :
                         command = "\"C:/WINDOWS/system32/osk.exe/osk.exe\"" ;
+                        break;
 
                     case "\"écrire une commande\"" :
                         customCommand.setVisible(true);
+                        break;
 
                 }
             }
