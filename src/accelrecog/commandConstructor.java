@@ -61,12 +61,7 @@ public class commandConstructor extends JFrame implements ActionListener{
             createScript.setText("Créer le script");
             createScript.addActionListener(this);
 
-            // écrire sa propre commande
-            customCommand = new JTextField();
-            customCommand.setSize(200,30);
-            customCommand.setLocation(300,100);
-            customCommand.setText("Écrire la commande");
-            customCommand.setVisible(false);
+
 
 
             // bouton permettant de sélectionner une app
@@ -118,18 +113,18 @@ public class commandConstructor extends JFrame implements ActionListener{
                         command = "\"C:/WINDOWS/system32/osk.exe/osk.exe\"" ;
                         break;
 
-                    case "\"écrire une commande\"" :
-                        customCommand.setVisible(true);
-                        break;
+                   // case "\"écrire une commande\"" :
+                   //     customCommand.setVisible(true);
+                   //     break;
 
                 }
             }
-            if(e.getSource()== createScript &&customCommand.isVisible()==false){
+            if(e.getSource()== createScript){
                 newgesture.myShortCut.newCmd(command);
                 dispose();
-            }else{
-                newgesture.myShortCut.newCmd(customCommand.getText());
-                dispose();
+           // }else{
+           //     newgesture.myShortCut.newCmd(customCommand.getText());
+            //    dispose();
             }
 
             if(e.getSource()==creer){
