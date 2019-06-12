@@ -268,6 +268,8 @@ public class TestImage extends JFrame implements ActionListener, ListSelectionLi
         accelGUI.allgest.clear();
         accelGUI.allgest.addAll(baseDonnee.recupererHistory(userId));
         accelGUI.showGestures();
+
+        hand.loadPreferences(baseDonnee.recupererData(userId));
         System.out.println("utilisateur sélectionné");
     }
 
