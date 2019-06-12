@@ -579,7 +579,7 @@ public class interrogBD2 {
 
             //execution de la requete
             ResultSet res = ps.executeQuery();
-
+            res.next();
             String hue= res.getString("hue");
             String hueThresh = res.getString("hueThresh");
             String saturation= res.getString("saturation");
